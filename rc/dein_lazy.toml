@@ -1,0 +1,103 @@
+[[plugin]]
+repo = 'Shougo/deoplete.nvim'
+on_i = 1
+hook_on_source = '''
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#auto_complete_delay = 0
+    if !exists('g:deoplete#omni#input_patterns')
+        let g:deoplete#omni#input_patterns = {}
+    endif
+    let g:deoplete#omni#input_patterns.python =
+      \ '\h\w*\|[^. \t]\.\w*'
+    let g:deoplete#omni#input_patterns.c=
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+    let g:deoplete#omni#input_patterns.cpp =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:deoplete#omni#input_patterns.rust =
+      \ '[^.[:digit:] *\t]\%(\.\|\::\)\%(\h\w*\)\?'
+    let g:deoplete#omni#input_patterns.java =
+
+  inoremap <expr><tab> pumvisible() ? "\<C-n>" :
+      \ neosnippet#expandable_or_jumpable() ?
+      \     "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+'''
+
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+on_i  = 1
+on_ft = ['snippet']
+depends = ['neosnippet-snippets']
+hook_source = '''
+    imap <C-k> <Plug>(neosnippet_expand_or_jump)
+    smap <C-k> <Plug>(neosnippet_expand_or_jump)
+    xmap <C-k> <Plug>(neosnippet_expand_target)
+    if has('conceal')
+        set conceallevel=2 concealcursor=niv
+        endif
+'''
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_source = ['denite.nvim']
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
+on_ft = ['html', 'javascript.jsx']
+hook_source = '''
+'''
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+on_i = 1
+
+[[plugins]]
+repo = 'sjl/gundo.vim'
+on_cmd = ['GundoToggle']
+
+#Python
+[[plugins]]
+repo = 'jmcantrell/vim-virtualenv'
+on_ft = ['python', 'python3', 'djangohmtl']
+
+[[plugins]]
+repo = 'tell-k/vim-autopep8'
+on_ft = ['python', 'python3', 'djangohtml']
+hook_source = '''
+    function! Preserve(command)
+        let search = @/
+        let cursor_position = getpos('.')
+        normal! H
+        let window_position = getpos('.')
+        call setpos('.', cursor_position)
+        execute a:command
+        let @/ = search
+        call setpos('.', window_position)
+        normal! zt
+        call setpos('.', cursor_position)
+    endfunction
+
+    function! Autopep8()
+        call Preserve(':silent %!autopep8 -')
+    endfunction
+
+    nnoremap <S-f> :call Autopep8()<CR>
+'''
+
+#Rust
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = ['rust']
+hook_source = '''
+    nnoremap <S-f> :RustFmt<CR>
+'''
+
+#JavaScript
+[[plugins]]
+repo = "maxmellon/vim-jsx-pretty"
+on_ft = ['javascript', 'javascript.jsx']
+
+#Toml
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = ['toml']
+
