@@ -221,26 +221,22 @@ hook_add = '''
 repo = 'Shougo/neosnippet-snippets'
 
 [[plugins]]
-repo = 'Yggdroot/indentLine'
-hook_add = '''
-    let g:indentLine_faster = 1
-    let g:indentLine_color_term = 111
-'''
-
-[[plugins]]
 repo = 'autozimu/LanguageClient-neovim'
 rev = 'next'
 build = 'bash install.sh'
 hook_add = '''
     set completeopt-=preview
     let g:LanguageClient_autoStart = 1
-    let g:lsp_package_path = expand("~/.lsp/")
+
+    let g:lsp_package_path = expand("~/.config/nvim/lsp/")
+
     let g:LanguageClient_serverCommands = {
     \ 'python': ['pyls'],
     \ 'c': ['clangd'],
     \ 'cpp': ['clangd'],
     \ 'rust': ['rls'],
     \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'tex': [expand(g:lsp_package_path) . '/texlab/texlab'],
     \ 'java': [
         \ 'java',
         \ '-Declipse.application=org.eclipse.jdt.ls.core.id1',
