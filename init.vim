@@ -53,7 +53,6 @@ set foldmethod=indent
 set foldnestmax=2
 set cursorline
 set guifont=Ricty\ 10
-set guicursor=
 let g:python3_host_prog = expand("/usr/bin/python")
 let mapleader = "\<Space>"
 
@@ -64,7 +63,6 @@ nnoremap <silent> <Leader>qq :q!<CR>
 nnoremap <silent> <Leader>wq :wq<CR>
 nnoremap <silent> <Leader>qa :qa!<CR>
 nnoremap <silent> <Leader>tn :<C-u>tabnew<CR>
-command! Wsudo :w !sudo tee % >> /dev/null
 
 inoremap jj <Esc>
 nmap <silent> <Esc><Esc> :nohlsearch<CR>
