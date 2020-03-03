@@ -161,9 +161,7 @@ hook_add = '''
           nnoremap <silent><buffer><expr> q
          \ defx#do_action('quit')
           nnoremap <silent><buffer><expr> <Space>
-         \ defx#do_action('toggle_select') . 'j'
-          nnoremap <silent><buffer><expr> *
-         \ defx#do_action('toggle_select_all')
+         \ defx#do_action('toggle_select') . 'j' nnoremap <silent><buffer><expr> * \ defx#do_action('toggle_select_all')
           nnoremap <silent><buffer><expr> j
          \ line('.') == line('$') ? 'gg' : 'j'
           nnoremap <silent><buffer><expr> k
@@ -211,47 +209,69 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'ervandew/supertab'
+repo = 'neoclide/coc.nvim'
+rev = 'release'
+merged = '0'
 hook_add = '''
-    let g:SuperTabContextDefaultCompletionType = "context"
-    let g:SuperTabDefaultCompletionType = "<c-n>"
-'''
+    inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
 
-[[plugins]]
-repo = 'autozimu/LanguageClient-neovim'
-rev = 'next'
-build = 'bash install.sh'
-hook_add = '''
-    set completeopt-=preview
-    let g:LanguageClient_autoStart = 1
+    if has('patch8.1.1068')
+        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    else
+        imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    endif
 
-    let g:lsp_package_path = expand("~/.config/nvim/lsp/")
+    nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-    let g:LanguageClient_serverCommands = {
-    \ 'python': ['pyls'],
-    \ 'c': ['clangd'],
-    \ 'cpp': ['clangd'],
-    \ 'rust': ['rls'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'tex': [expand(g:lsp_package_path) . '/texlab/texlab'],
-    \ 'java': [
-        \ 'java',
-        \ '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-        \ '-Dosgi.bundles.defaultStartLevel=4',
-        \ '-Declipse.product=org.eclipse.jdt.ls.core.product',
-        \ '-noverify',
-        \ '-Xmx1G',
-        \ '-jar',
-        \ expand(g:lsp_package_path) . '/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.5.500.v20190715-1310.jar',
-        \ '-configuration',
-        \ expand(g:lsp_package_path) . '/eclipse.jdt.ls/config_linux',
-        \ '-data',
-        \ expand(g:lsp_package_path) . '/eclipse.jdt.ls',
-        \ ],
-    \ }
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
+
+    nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+    function! s:show_documentation()
+        if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+        else
+            call CocAction('doHover')
+        endif
+    endfunction
+
+    autocmd CursorHold * silent call CocActionAsync('highlight')
+
+    nmap <leader>rn <Plug>(coc-rename)
+
+    nmap <leader>ac  <Plug>(coc-codeaction)
+    nmap <leader>qf  <Plug>(coc-fix-current)
+
+    xmap if <Plug>(coc-funcobj-i)
+    xmap af <Plug>(coc-funcobj-a)
+    omap if <Plug>(coc-funcobj-i)
+    omap af <Plug>(coc-funcobj-a)
+
+    command! -nargs=0 Format :call CocAction('format')
+    command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+    command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+    nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+    nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+    nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+    nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+    nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+    nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+    nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+    nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 '''
 
 [[plugins]]
@@ -265,27 +285,19 @@ hook_add = '''
         \   'left': [
         \     ['mode', 'paste'],
         \     ['gitbranch', 'readonly', 'filename', 'modified'],
-        \     ['lsp'],
+        \     ['cocstatus', 'currentfunction'],
         \   ]
         \ },
         \ 'component_function': {
         \   'gitbranch': 'fugitive#head',
-        \   'lsp': 'LSPStatus',
+        \   'cocstatus': 'coc#status',
+        \   'currentfunction': 'CocCurrentFunction'
         \ },
         \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
         \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" },
         \}
 
-    function! LSPStatus() abort
-        let l:errors = 0
-        let l:warnings = 0
-        for item in getqflist()
-            if item["type"] == "E"
-                let l:errors += 1
-            else
-                let l:warnings += 1
-            endif
-        endfor
-        return l:errors + l:warnings == 0 ? "LSP: OK" : "LSP: E:" . l:errors . " " . "W:" . l:warnings
+    function! CocCurrentFunction()
+        return get(b:, 'coc_current_function', '')
     endfunction
 '''
