@@ -62,10 +62,11 @@ nnoremap <silent> <Leader>ww :w<CR>
 nnoremap <silent> <Leader>qq :q!<CR>
 nnoremap <silent> <Leader>wq :wq<CR>
 nnoremap <silent> <Leader>qa :qa!<CR>
-nnoremap <silent> <Leader>tn :<C-u>tabnew<CR>
+nnoremap <silent> <Leader>tn :tabnew<CR>
 
 inoremap jj <Esc>
-nmap <silent> <Esc><Esc> :nohlsearch<CR>
+tnoremap <Esc> <C-\><C-n>
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 vnoremap <silent> * "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>
 nnoremap n nzz
 nnoremap N Nzz
