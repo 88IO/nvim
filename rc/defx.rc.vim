@@ -1,4 +1,13 @@
-nnoremap <silent> <Leader>f :<C-u>Defx -split=vertical -winwidth=30 -direction=topleft -toggle<CR>
+nnoremap <silent> <Leader>f :<C-u>Defx<CR>
+
+call defx#custom#option('_', {
+\ 'winwidth': 50,
+\ 'ignored_files': '.*,target*',
+\ 'direction': 'topleft',
+\ 'split': 'vertical',
+\ 'toggle': 1,
+\ 'columns': 'indent:git:icons:filename:mark',
+\ })
 
 autocmd FileType defx call s:defx_my_settings()
     function! s:defx_my_settings() abort
@@ -45,9 +54,9 @@ autocmd FileType defx call s:defx_my_settings()
         \ line('.') == line('$') ? 'gg' : 'j'
         nnoremap <silent><buffer><expr> k
         \ line('.') == 1 ? 'G' : 'k'
-        nnoremap <silent><buffer><expr> <C-l>
+        nnoremap <silent><buffer><expr> <C-r>
         \ defx#do_action('redraw')
-        nnoremap <silent><buffer><expr> <C-g>
+        nnoremap <silent><buffer><expr> <C-p>
         \ defx#do_action('print')
         nnoremap <silent><buffer><expr> cd
         \ defx#do_action('change_vim_cwd')
