@@ -44,17 +44,17 @@ hook_source = '''
 '''
 
 #JavaScript
-[[plugins]]
-repo = "maxmellon/vim-jsx-pretty"
-on_ft = ['javascript', 'javascriptreact', 'typescript', 'typescriptreact']
+#[[plugins]]
+#repo = "maxmellon/vim-jsx-pretty"
+#on_ft = ['javascript', 'javascriptreact', 'typescript', 'typescriptreact']
 
 ## TypeScript
-[[plugins]]
-repo = 'HerringtonDarkholme/yats.vim'
-on_ft = ['typescript', 'typescriptreact']
+#[[plugins]]
+#repo = 'HerringtonDarkholme/yats.vim'
+#on_ft = ['typescript', 'typescriptreact']
 
 #Toml
-[[plugins]]
-repo = 'cespare/vim-toml'
-on_ft = ['toml']
+#[[plugins]]
+#repo = 'cespare/vim-toml'
+#on_ft = ['toml']
 

@@ -57,3 +57,13 @@ repo = 'itchyny/lightline.vim'
 hook_add = '''
     source ~/.config/nvim/rc/lightline.rc.vim
 '''
+
+[[plugins]]
+repo = "nvim-treesitter/nvim-treesitter"
+merged = 0
+hook_add = '''
+    source ~/.config/nvim/rc/nvim-treesitter.rc.vim
+'''
+
+[[plugins]]
+repo = "bluz71/vim-nightfly-guicolors"

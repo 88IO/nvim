@@ -53,6 +53,7 @@ set foldmethod=indent
 set foldnestmax=2
 set cursorline
 set guifont=Ricty\ 10
+set termguicolors
 let g:python3_host_prog = expand("/usr/bin/python")
 let mapleader = "\<Space>"
 
