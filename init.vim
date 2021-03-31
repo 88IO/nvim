@@ -146,6 +146,8 @@ if has('vim_starting') && dein#check_install()
   call dein#install()
 endif
 
+"source ~/.config/nvim/rc/nvim-treesitter.rc.vim
+
 filetype plugin indent on
 syntax enable
 

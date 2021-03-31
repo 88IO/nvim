@@ -62,8 +62,14 @@ hook_add = '''
 repo = "nvim-treesitter/nvim-treesitter"
 merged = 0
 hook_add = '''
-    source ~/.config/nvim/rc/nvim-treesitter.rc.vim
+    au MyAutoCmd VimEnter * source ~/.config/nvim/rc/nvim-treesitter.rc.vim
 '''
 
 [[plugins]]
 repo = "bluz71/vim-nightfly-guicolors"
+
+[[plugins]]
+repo = "ChristianChiarulli/nvcode-color-schemes.vim"
+
+[[plugins]]
+repo = "junegunn/fzf.vim"
